@@ -2,21 +2,21 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Import all the pages
-import Basket from "./Basket";
-import Checkout from "./Checkout";
-import Error from "./Error";
-import Home from "./Home";
-import Login from "./Login";
-import NotificationPage from "./NotificationPage";
-import OrderConfirmation from "./OrderConfirmation";
-import OrderDetails from "./OrderDetails";
-import Orders from "./Orders";
-import ProductPage from "./ProductPage";
-import RecentlyViewed from "./RecentlyViewed";
-import SearchResults from "./SearchResults";
-import Settings from "./Settings";
-import User from "./User";
-import Wishlist from "./Wishlist";
+import Basket from "./pages/Basket";
+import Checkout from "./pages/Checkout";
+import Error from "./pages/Error";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import NotificationPage from "./pages/NotificationPage";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import OrderDetails from "./pages/OrderDetails";
+import Orders from "./pages/Orders";
+import ProductPage from "./pages/ProductPage";
+import RecentlyViewed from "./pages/RecentlyViewed";
+import SearchResults from "./pages/SearchResults";
+import Settings from "./pages/Settings";
+import User from "./pages/User";
+import Wishlist from "./pages/Wishlist";
 
 const AppRouter = () => {
   return (
