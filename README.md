@@ -30,22 +30,14 @@ Follow these steps to get the project up and running locally on your machine.
 
 ### 1. Clone the Repository
 
-- First, clone the repository to your local machine:
-  git clone https://github.com/exze-alegre/minnano.git
-
-- Navigate to the project directory:
-  cd minnano
+1. First, clone the repository to your local machine: git clone https://github.com/exze-alegre/minnano.git
+2. Navigate to the project directory: cd minnano
 
 ### 2. Set Up the Frontend
 
-- Navigate to the minnano-frontend directory:
-  cd minnano-frontend
-
-- Install the frontend dependencies:
-  npm install
-
-- Run the frontend development server:
-  npm start
+1. Navigate to the minnano-frontend directory: cd minnano-frontend
+2. Install the frontend dependencies: npm install
+3. Run the frontend development server: npm start
 
 This will start the React development server, and you should be able to view the frontend at http://localhost:3000.
 
@@ -55,7 +47,7 @@ This will start the React development server, and you should be able to view the
 2. Install the backend dependencies: npm install
 3. Create a .env file in the minnano-backend directory to configure your environment variables. You will need to set up your database connection details, for example:
 
-   DB_HOST=localhost DB_USER=your-db-username DB_PASSWORD=your-db-password DB_NAME=minnano_db
+DB_HOST=localhost DB_USER=your-db-username DB_PASSWORD=your-db-password DB_NAME=minnano_db
 
 4. Start the backend server: npm start
 
