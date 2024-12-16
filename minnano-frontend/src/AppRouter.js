@@ -7,6 +7,7 @@ import Checkout from "./pages/Checkout";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import NotificationPage from "./pages/NotificationPage";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderDetails from "./pages/OrderDetails";
@@ -36,6 +37,7 @@ const AppRouter = () => {
         <Route path="/user" element={<User />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
 
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Error />} />

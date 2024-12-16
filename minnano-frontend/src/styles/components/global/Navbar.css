@@ -1,0 +1,13 @@
+.navbar {
+  span {
+    color: #dc2626;
+  }
+
+  .category {
+    font-family: "Roboto Condensed", sans-serif;
+  }
+}
+
+.brand {
+  font-family: "Sawarabi Gothic", sans-serif;
+}
