@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/login/Header";
 import Footer from "../components/global/Footer";
+import Loader from "../components/global/Loader";
 import Notification from "../components/global/Notification";
 import Facebook from "../assets/global/036-facebook.png";
 import Google from "../assets/global/Google__G__logo.svg.png";
@@ -13,9 +14,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [notification, setNotification] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = () => {
-    navigate("/signup");
+    setIsLoading(true);
+
+    setTimeout(() => {
+      navigate("/signup");
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleLogin = async (e) => {
@@ -39,7 +46,7 @@ const Login = () => {
       alert("Logged in!");
     } catch (err) {
       console.error(err);
-      alert("Error loggin in.");
+      alert("Error logging in.");
     }
   };
 
@@ -117,8 +124,7 @@ const Login = () => {
       {notification.length > 0 && <Notification notification={notification} />}
 
       <Footer />
-
-      {/* Notification Component */}
+      <Loader isLoading={isLoading} />
     </div>
   );
 };

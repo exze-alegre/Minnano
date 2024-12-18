@@ -1,30 +1,20 @@
-// server.js
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const pool = require("./db"); // Import the pool from db.js
-require("dotenv").config();
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
-const PORT = 3000;
 
-app.use(cors());
+// Middleware
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the API!");
-});
+app.use("/auth", authRoutes);
 
-// Example route to query the database
-app.get("/users", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM users");
-    res.json(result.rows); // Send the query result back to the client
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(5001, () => console.log("Server running on http://localhost:5000"));

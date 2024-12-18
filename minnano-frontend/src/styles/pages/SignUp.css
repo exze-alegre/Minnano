@@ -1,11 +1,18 @@
 .signup {
   background-color: rgb(176, 42.4, 55.2);
 
-  .signup-form {
+  .verify-form {
     font-family: "Sawarabi Gothic", sans-serif;
     background-color: rgb(217, 101, 101);
     width: 350px;
     height: 320px;
+  }
+
+  .signup-form {
+    font-family: "Sawarabi Gothic", sans-serif;
+    background-color: rgb(217, 101, 101);
+    width: 350px;
+    height: 340px;
   }
 
   button {
