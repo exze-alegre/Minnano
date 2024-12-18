@@ -56,13 +56,46 @@ const SignUp = () => {
 
     setIsLoading(true); // Show loader before making the request
     try {
-      await axios.post("http://localhost:5000/send-verification-code", {
+      // Check if the email already exists
+      const emailCheckResponse = await axios.post(
+        "http://localhost:5000/auth/check-email",
+        {
+          email,
+        }
+      );
+
+      if (emailCheckResponse.data.registered) {
+        // Notify the user if the email is already registered
+        setNotification((prevNotification) => [
+          ...prevNotification,
+          {
+            id: Date.now(),
+            message: "Email already exists. Please use another email.",
+          },
+        ]);
+        setIsLoading(false);
+        return; // Do not proceed further if email exists
+      }
+
+      // If email is not registered, proceed with sending verification code
+      await axios.post("http://localhost:5000/auth/send-verification-code", {
         email,
       });
+
       setIsLoading(false); // Hide loader after the request is done
-      navigate("/verify", { state: { email } });
+      navigate("/verify", { state: { email } }); // Navigate to verify page
     } catch (err) {
-      console.error("Failed to send verification code:", err);
+      console.error(
+        "Error during email check or sending verification code:",
+        err
+      );
+      setNotification((prevNotification) => [
+        ...prevNotification,
+        {
+          id: Date.now(),
+          message: "An error occurred. Please try again later.",
+        },
+      ]);
       setIsLoading(false); // Hide loader if error occurs
     }
   };

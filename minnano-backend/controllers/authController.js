@@ -29,6 +29,26 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const checkEmail = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Query the database to check if the email exists
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (result.rowCount > 0) {
+      return res.status(200).json({ registered: true });
+    } else {
+      return res.status(200).json({ registered: false });
+    }
+  } catch (err) {
+    console.error("Error checking email:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Function to generate a random 6-digit verification code
 const generateVerificationCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -38,16 +58,13 @@ const generateVerificationCode = () => {
 const verificationCodes = {};
 
 // POST route for sending the verification code
-app.post("/send-verification-code", async (req, res) => {
+const sendVerificationCode = async (req, res) => {
   const { email } = req.body;
 
   try {
     // Generate and store the verification code
     const code = generateVerificationCode();
     verificationCodes[email] = code;
-
-    // Log the generated code (you can remove this later)
-    console.log("Generated verification code:", code);
 
     // Send the verification code to the provided email address
     await transporter.sendMail({
@@ -62,19 +79,16 @@ app.post("/send-verification-code", async (req, res) => {
     console.error("Error sending email:", err);
     res.status(500).send("Failed to send verification code.");
   }
-});
+};
 
 // Endpoint to resend the verification code
-app.post("/resend-code", async (req, res) => {
+const resendVerificationCode = async (req, res) => {
   const { email } = req.body;
 
   try {
     // Generate and store the verification code
     const code = generateVerificationCode();
     verificationCodes[email] = code;
-
-    // Log the generated code (you can remove this later)
-    console.log("Generated verification code:", code);
 
     // Send the verification code to the provided email address
     await transporter.sendMail({
@@ -89,10 +103,10 @@ app.post("/resend-code", async (req, res) => {
     console.error("Error sending email:", err);
     res.status(500).send("Failed to send verification code.");
   }
-});
+};
 
 // POST route for verifying the code
-app.post("/verify-code", (req, res) => {
+const verifyCode = (req, res) => {
   const { email, code } = req.body;
 
   // Check if the provided code matches the stored code for the email
@@ -101,7 +115,7 @@ app.post("/verify-code", (req, res) => {
     return res.status(200).json({ message: "Email verified", verified: true });
   }
   return res.status(400).send(`Invalid verification code: ${code}`);
-});
+};
 
 // POST route for user login
 const login = async (req, res) => {
@@ -140,6 +154,11 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login };
-// Start the Express server
-app.listen(5000, () => console.log("Server running on http://localhost:5000"));
+// POST route for checking if the email is registered
+module.exports = {
+  login,
+  sendVerificationCode,
+  resendVerificationCode,
+  verifyCode,
+  checkEmail,
+};

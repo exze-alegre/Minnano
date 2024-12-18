@@ -15,6 +15,7 @@ app.use(
   })
 );
 
+// Use authRoutes with the "/auth" prefix
 app.use("/auth", authRoutes);
 
-app.listen(5001, () => console.log("Server running on http://localhost:5000"));
+app.listen(5000, () => console.log("Server running on http://localhost:5000"));

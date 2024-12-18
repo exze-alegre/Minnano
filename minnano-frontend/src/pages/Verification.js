@@ -41,7 +41,7 @@ const Verification = () => {
   const handleResend = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/resend-code", {
+      const response = await fetch("http://localhost:5000/auth/resend-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailFromState }), // Send the email to resend the code
@@ -76,7 +76,7 @@ const Verification = () => {
     const code = values.join("");
 
     try {
-      const response = await fetch("http://localhost:5000/verify-code", {
+      const response = await fetch("http://localhost:5000/auth/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailFromState, code }), // Send email and code to the backend
