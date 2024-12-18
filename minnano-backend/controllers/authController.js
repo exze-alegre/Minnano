@@ -114,17 +114,21 @@ const login = async (req, res) => {
       [email]
     );
 
-    if (userResult.rowCount === 0)
+    if (userResult.rowCount === 0) {
       return res.status(400).send("Invalid email or password.");
+    }
 
     const user = userResult.rows[0];
 
-    // Compare the provided password with the stored password (use bcrypt for hashing)
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).send("Invalid email or password.");
+    // Compare the provided password with the stored plain text password
+    if (password !== user.password) {
+      return res.status(400).send("Invalid email or password.");
+    }
 
     // Generate a session token (replace with real JWT token generation)
-    const sessionToken = jwt.sign({ userId: user.id }, SECRET_KEY);
+    const sessionToken = jwt.sign({ userId: user.id }, SECRET_KEY, {
+      expiresIn: "1h", // Optional: Add an expiration to the JWT token
+    });
 
     // Send the session token as a cookie
     res
@@ -136,8 +140,6 @@ const login = async (req, res) => {
   }
 };
 
-// Export the login function (you can expand to export other functions if needed)
 module.exports = { login };
-
 // Start the Express server
 app.listen(5000, () => console.log("Server running on http://localhost:5000"));
