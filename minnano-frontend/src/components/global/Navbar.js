@@ -7,13 +7,13 @@ import "../../styles/components/global/Navbar.css";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const handleSignup = () => {
-    navigate("/signup");
+  const handleLogin = () => {
+    navigate("/login");
   };
 
   return (
     <div className="navbar">
-      <nav className="bg-white border-b shadow-md px-20">
+      <nav className="bg-white border-b shadow-md px-[300px]">
         <div className="max-w-screen-xl mx-auto pt-4 pb-3">
           <div className="grid grid-cols-[2fr,8fr,2fr] items-center gap-4 mb-3">
             {/* Logo Section */}
@@ -22,9 +22,9 @@ const Navbar = () => {
                 <img
                   src="https://via.placeholder.com/100?text=logo"
                   alt="logo"
-                  className="h-14 pe-3"
+                  className="h-10 pe-3"
                 />
-                <span className="brand self-center text-2xl text-red-600 whitespace-nowrap">
+                <span className="brand self-center text-xl text-red-600 whitespace-nowrap">
                   MINNANO
                 </span>
               </a>
@@ -46,20 +46,20 @@ const Navbar = () => {
             {/* Right Section */}
             <div className="flex flex-wrap gap-5 text-right items-center justify-center">
               <span
-                onClick={handleSignup}
-                className="cursor-pointer text-lg font-semibold"
+                onClick={handleLogin}
+                className="cursor-pointer text-md font-semibold"
               >
-                Sign up
+                Log in
               </span>
-              <span className="cursor-pointer text-4xl">
+              <span className="cursor-pointer text-3xl">
                 <FaShoppingBasket />
               </span>
-              <span className="cursor-pointer text-4xl">
+              <span className="cursor-pointer text-3xl">
                 <FaRegHeart />
               </span>
             </div>
           </div>
-          <div className="category flex gap-20 items-center font-bold justify-center text-lg text-center ">
+          <div className="category flex gap-20 items-center font-bold justify-center text-sm text-center ">
             <span>NEW</span>
             <span>BEST SELLER</span>
             <span>TRENDING</span>

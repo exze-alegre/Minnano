@@ -1,13 +1,11 @@
-// db.js
 const { Pool } = require("pg");
-require("dotenv").config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: "postgres", // Replace with your PostgreSQL username
+  host: "localhost",
+  database: "minnano_db",
+  password: "TSA5ZNZG", // Replace with your PostgreSQL password
+  port: 5432,
 });
 
 module.exports = pool;

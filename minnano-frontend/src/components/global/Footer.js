@@ -7,8 +7,8 @@ import "../../styles/components/global/Footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer">
-      <div className="flex justify-evenly mx-auto">
+    <div className="footer text-sm">
+      <div className="flex justify-evenly mx-auto px-10">
         <div className="flex flex-col items-start">
           <small className="font-semibold">Customer Service</small>
           <small>Help Center</small>
@@ -45,7 +45,7 @@ const Footer = () => {
 
           {/* Flex container for QR code and Playstore */}
           <div className="flex items-start space-x-4">
-            <img src={Qrcode} alt="QrCode" className="h-20" />
+            <img src={Qrcode} alt="QrCode" className="h-14" />
 
             {/* Flex container to stack Playstore items vertically and align to top */}
             <div className="flex flex-col justify-start space-y-2">

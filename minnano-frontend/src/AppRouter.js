@@ -18,6 +18,7 @@ import SearchResults from "./pages/SearchResults";
 import Settings from "./pages/Settings";
 import User from "./pages/User";
 import Wishlist from "./pages/Wishlist";
+import Verification from "./pages/Verification";
 
 const AppRouter = () => {
   return (
@@ -38,6 +39,7 @@ const AppRouter = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/verify" element={<Verification />} />
 
         {/* Catch-all route for unknown paths */}
         <Route path="*" element={<Error />} />

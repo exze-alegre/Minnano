@@ -1,0 +1,14 @@
+.login {
+  background-color: rgb(176, 42.4, 55.2);
+
+  .login-form {
+    font-family: "Sawarabi Gothic", sans-serif;
+    background-color: rgb(217, 101, 101);
+    width: 350px;
+    height: 400px;
+  }
+
+  button {
+    background-color: #dc3545;
+  }
+}
