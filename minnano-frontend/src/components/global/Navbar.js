@@ -59,13 +59,14 @@ const Navbar = () => {
               </span>
             </div>
           </div>
-          <div className="category flex gap-20 items-center font-bold justify-center text-sm text-center ">
+          <div className="category flex gap-16 items-center font-bold justify-center text-sm text-center ">
             <span>NEW</span>
             <span>BEST SELLER</span>
             <span>TRENDING</span>
             <span>PLUSHIES</span>
             <span>KEYCHAINS</span>
             <span>CROCHET</span>
+            <span>WEARABLES</span>
           </div>
         </div>
       </nav>

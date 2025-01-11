@@ -12,7 +12,20 @@
     font-family: "Sawarabi Gothic", sans-serif;
     background-color: rgb(217, 101, 101);
     width: 350px;
-    height: 340px;
+    height: 400px;
+  }
+
+  .password[type="password"] {
+    letter-spacing: -2px; /* Tighten spacing for password dots */
+  }
+
+  .password[type="text"] {
+    letter-spacing: normal; /* Reset spacing for visible text */
+  }
+
+  .password::placeholder {
+    letter-spacing: normal; /* Ensure placeholder remains unaffected */
+    color: #888;
   }
 
   button {

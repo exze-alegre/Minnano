@@ -86,7 +86,9 @@ const Verification = () => {
         setIsLoading(true);
 
         setTimeout(() => {
-          navigate(`/signup?email=verified`);
+          navigate(`/signup?email=verified`, {
+            state: { email: emailFromState },
+          });
           setIsLoading(false);
         }, 500);
       } else {

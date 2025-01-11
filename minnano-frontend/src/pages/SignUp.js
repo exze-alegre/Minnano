@@ -12,19 +12,23 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importing eye icons for s
 import "../styles/pages/SignUp.css";
 
 const SignUp = () => {
-  const [email, setEmail] = useState();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [passwordMismatchError, setPasswordMismatchError] = useState(false);
+  const [showRequirements, setShowRequirements] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
   const [isVerified, setIsVerified] = useState(false); // Track if email is verified
   const [isLoading, setIsLoading] = useState(false); // Manage loading state
   const [notification, setNotification] = useState([]); // Notification state
   const navigate = useNavigate();
   const location = useLocation();
+  const emailFromState = location.state?.email || localStorage.getItem("email");
+
+  if (!localStorage.getItem("email")) {
+    localStorage.setItem("email", emailFromState);
+  }
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -100,8 +104,51 @@ const SignUp = () => {
     }
   };
 
-  const handleFinalSubmit = async (e) => {
+  const passwordRequirements = {
+    length: /.{8,}/, // at least 8 characters
+    uppercase: /[A-Z]/, // contains uppercase
+    number: /\d/, // contains number
+  };
+
+  const validatePassword = (password) => {
+    // Check if all requirements are met
+    const isValid =
+      passwordRequirements.length.test(password) &&
+      passwordRequirements.uppercase.test(password) &&
+      passwordRequirements.number.test(password);
+    setPasswordValid(isValid);
+    return isValid;
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setShowRequirements(true); // Show the password requirements as soon as the user types
+    validatePassword(e.target.value); // Check if password is valid
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prev) => !prev);
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (!username) {
+      setNotification((prevNotification) => [
+        ...prevNotification,
+        { id: Date.now(), message: "Please enter a username." },
+      ]);
+      return;
+    }
+
+    if (!password) {
+      setNotification((prevNotification) => [
+        ...prevNotification,
+        { id: Date.now(), message: "Please enter a valid password." },
+      ]);
+      return;
+    }
+
     try {
       // Send the email, username, and password to the server
       const response = await axios.post("http://localhost:5000/register", {
@@ -116,14 +163,6 @@ const SignUp = () => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((prev) => !prev);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible((prev) => !prev);
-  };
-
   return (
     <div className="signup flex flex-col min-h-screen">
       <Header />
@@ -131,12 +170,12 @@ const SignUp = () => {
         <p className="text-green-500">{verificationStatus}</p>
       )}
 
-      {/* Conditional Rendering for Forms */}
-      {!isVerified ? (
-        <div className="flex-grow grid grid-cols-[7fr_5fr]">
-          <div className="flex items-center justify-center">
-            <img src="https://via.placeholder.com/400?text=Logo" alt="Logo" />
-          </div>
+      <div className="flex-grow grid grid-cols-[7fr_5fr]">
+        <div className="flex items-center justify-center">
+          <img src="https://via.placeholder.com/400?text=Logo" alt="Logo" />
+        </div>
+        {/* Conditional Rendering for Forms */}
+        {!isVerified ? (
           <div className="flex items-center justify-center text-white">
             <div className="verify-form text-start py-8 px-10 rounded-lg">
               <h1 className="text-2xl mb-4">Sign up</h1>
@@ -144,7 +183,7 @@ const SignUp = () => {
                 <input
                   type="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg text-sm block w-full p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg text-sm block w-full p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-300"
                   placeholder="Enter your Email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -188,73 +227,85 @@ const SignUp = () => {
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex flex-grow items-center justify-center text-white">
-          <div className="signup-form text-start py-8 px-10 rounded-lg">
-            <h1 className="text-2xl mb-4">Sign up</h1>
-            <form>
-              {/* Username Input */}
-              <input
-                type="text"
-                id="username"
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg text-sm block w-full p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                placeholder="Enter your Username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-
-              {/* Password Input */}
-              <div className="relative mb-3 text-gray-500">
+        ) : (
+          <div className="flex items-center justify-center text-white">
+            <div className="signup-form text-start py-8 px-10 rounded-lg">
+              <h1 className="text-2xl mb-4">Sign up</h1>
+              <form>
+                <input
+                  type="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-500 rounded-lg text-sm block w-full p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  value={emailFromState}
+                  readOnly
+                />
+                <input
+                  type="text"
+                  id="username"
+                  className="bg-gray-50 border border-gray-300 text-gray-800 rounded-lg text-sm block w-full p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  placeholder="Username"
+                  required
+                />
                 <input
                   type={passwordVisible ? "text" : "password"}
                   id="password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg text-sm block w-full p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  placeholder="Enter your Password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-800 rounded-lg text-sm block w-full p-2 mb-1 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  placeholder="Password"
+                  required
                 />
-              </div>
 
-              {/* Confirm Password Input */}
-              <div className="relative text-gray-500">
-                <input
-                  type={passwordVisible ? "text" : "password"}
-                  id="confirmPassword"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg text-sm block w-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  placeholder="Confirm your Password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-
-              {/* Password Mismatch Error */}
-              {passwordMismatchError && (
-                <p className="text-red-500 text-xs mt-1">
-                  Passwords do not match
-                </p>
-              )}
-
-              {/* Show Password Icon and Text (Below Confirm Password) */}
-              <div
-                className="flex items-center space-x-2 mt-1 cursor-pointer opacity-65 text-xs"
-                onClick={togglePasswordVisibility}
-              >
-                <span>{passwordVisible ? <FaEyeSlash /> : <FaEye />}</span>
-                <span>Show Password</span>
-              </div>
-
-              {/* Submit Button */}
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="px-12 py-2 text-sm mt-5 rounded-lg hover:bg-red-700"
-                  onClick={handleFinalSubmit}
+                <div
+                  className="flex items-center space-x-2 mt-1 cursor-pointer opacity-65 text-xs"
+                  onClick={togglePasswordVisibility}
                 >
-                  Sign Up
-                </button>
+                  <span>{passwordVisible ? <FaEyeSlash /> : <FaEye />}</span>
+                  <span>Show Password</span>
+                </div>
+
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="px-12 py-2 text-sm mt-1.5 rounded-lg hover:bg-red-700"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
+                </div>
+
+                <button></button>
+              </form>
+              <div className="grid grid-cols-3 items-center justify-center my-3">
+                <hr className="opacity-40" />
+                <small className="text-white text-center text-xs">or</small>
+                <hr className="opacity-40" />
               </div>
-            </form>
+              <div className="flex flex-cols items-center justify-evenly gap-5">
+                <span className="bg-gray-50 rounded-lg flex items-center text-sm text-gray-900 py-1.5 px-3">
+                  <img
+                    src={Facebook}
+                    alt=""
+                    className="h-5 rounded-full me-2"
+                  />
+                  Facebook
+                </span>
+                <span className="bg-gray-50 rounded-lg flex items-center text-sm text-gray-900 py-1.5 px-3">
+                  <img src={Google} alt="" className="h-5 rounded-full me-2" />
+                  Google
+                </span>
+              </div>
+              <div className="flex justify-center">
+                <small
+                  className="text-white text-sm py-3 cursor-pointer"
+                  onClick={handleLogin}
+                >
+                  Already have an account?{" "}
+                  <span className="underline">Login</span>
+                </small>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {notification.length > 0 && <Notification notification={notification} />}
       <Footer />

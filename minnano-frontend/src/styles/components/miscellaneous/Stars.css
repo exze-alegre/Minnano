@@ -1,0 +1,14 @@
+.star-icons {
+  display: flex;
+  gap: 5px;
+  margin-top: 0;
+  background-color: transparent;
+
+  .filled-star {
+    color: #ffcd39;
+  }
+
+  .empty-star {
+    color: lightgray;
+  }
+}

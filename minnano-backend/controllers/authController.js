@@ -5,8 +5,7 @@ const cookieParser = require("cookie-parser");
 const pool = require("../config/db");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
-require("dotenv").config(); // Load environment variables
-
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -20,7 +19,6 @@ app.use(
   })
 );
 
-// Set up Nodemailer transport with Gmail credentials
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -33,7 +31,6 @@ const checkEmail = async (req, res) => {
   const { email } = req.body;
 
   try {
-    // Query the database to check if the email exists
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
@@ -86,11 +83,9 @@ const resendVerificationCode = async (req, res) => {
   const { email } = req.body;
 
   try {
-    // Generate and store the verification code
     const code = generateVerificationCode();
     verificationCodes[email] = code;
 
-    // Send the verification code to the provided email address
     await transporter.sendMail({
       from: `"MINNANO" <${process.env.EMAIL}>`,
       to: email,
@@ -109,7 +104,6 @@ const resendVerificationCode = async (req, res) => {
 const verifyCode = (req, res) => {
   const { email, code } = req.body;
 
-  // Check if the provided code matches the stored code for the email
   if (verificationCodes[email] === code) {
     delete verificationCodes[email]; // Delete the code after it's used
     return res.status(200).json({ message: "Email verified", verified: true });
@@ -122,7 +116,6 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Query the database to check for the user
     const userResult = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
@@ -134,17 +127,14 @@ const login = async (req, res) => {
 
     const user = userResult.rows[0];
 
-    // Compare the provided password with the stored plain text password
     if (password !== user.password) {
       return res.status(400).send("Invalid email or password.");
     }
 
-    // Generate a session token (replace with real JWT token generation)
     const sessionToken = jwt.sign({ userId: user.id }, SECRET_KEY, {
-      expiresIn: "1h", // Optional: Add an expiration to the JWT token
+      expiresIn: "1h",
     });
 
-    // Send the session token as a cookie
     res
       .cookie("session_token", sessionToken, { httpOnly: true })
       .send("Logged in successfully!");
